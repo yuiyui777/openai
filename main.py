@@ -6,7 +6,17 @@ from dotenv import load_dotenv
 # 環境変数の読み込み
 load_dotenv()
 api_key = os.getenv("OPENAI_API_KEY")
-client = OpenAI(api_key=api_key)
+
+# APIキーの確認
+if not api_key:
+    st.error("APIキーが設定されていません。Streamlit Cloudの設定でOPENAI_API_KEYを設定してください。")
+    st.stop()
+
+try:
+    client = OpenAI(api_key=api_key)
+except Exception as e:
+    st.error(f"OpenAIクライアントの初期化に失敗しました: {str(e)}")
+    st.stop()
 
 # 文章の種類のリスト
 content_kind_of = [
